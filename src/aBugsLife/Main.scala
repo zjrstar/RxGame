@@ -154,8 +154,8 @@ class Game extends Application {
     val heartBoundingBoxes: Observable[Bounds] = clock.map(_ => sun.localToScene(sun.getLayoutBounds))
     val bugBoundingBoxes: Observable[Bounds] = clock.map(_ => bug.localToScene(bug.getLayoutBounds))
 
-    bugBoundingBoxes.combineLatest(heartBoundingBoxes, (bug: Bounds, heart: Bounds) => bug.intersects(heart))
-      .buffer(2,1)
+    bugBoundingBoxes.combineLatest(heartBoundingBoxes).map{case (bug: Bounds, heart: Bounds) => bug.intersects(heart)}
+      .slidingBuffer(2,1)
       .filter(hits => hits(0) != hits(1))
       .subscribe(hits =>
       if(!hits(0)) {
