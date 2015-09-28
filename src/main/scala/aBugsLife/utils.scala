@@ -18,6 +18,9 @@ import javafx.scene._
 import rx.lang.scala._
 import javafx.scene.input._
 import javafx.event.EventHandler
+import rx.lang.scala.schedulers.TestScheduler
+
+import scala.concurrent.duration._
 
 package object utils {
 
@@ -32,7 +35,8 @@ package object utils {
     }
   })
 
-  def enterKeys(scene: Scene): Observable[KeyEvent] = keyPresses(scene).filter(_.getCode == KeyCode.ENTER)
+  def enterKeysV1(scene: Scene): Observable[KeyEvent] = keyPresses(scene).filter(_.getCode == KeyCode.ENTER)
+  def enterKeys(scene: Scene): Observable[Long] = Observable.interval(0.05 second)
   def spaceBars(scene: Scene): Observable[KeyEvent] = keyPresses(scene).filter(_.getCode == KeyCode.SPACE)
 
 }
